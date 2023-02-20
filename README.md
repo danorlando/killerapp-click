@@ -1,2 +1,1 @@
-# killerapp-click
-Repository for killerapp.click with AWS integration
+# Repo for the killerapp.click website
