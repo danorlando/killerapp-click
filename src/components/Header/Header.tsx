@@ -3,10 +3,10 @@ function header() {
   return (
     <header>
       <div className="surface-0">
-        <div className="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+        <div className="flex align-items-start flex-column sm:justify-content-between sm:flex-row">
           <div>
             <div className="font-medium text-3xl text-900 text-primary">
-              AI Powered Music Suggestor
+              AI Powered Playlist Generator
             </div>
             <div className="flex align-items-center text-700 flex-wrap">
               <div className="mr-5 flex align-items-center mt-3">
