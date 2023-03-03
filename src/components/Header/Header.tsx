@@ -8,7 +8,7 @@ function header() {
             <div className="font-medium text-3xl text-900 text-primary">
               AI Powered Playlist Generator
             </div>
-            <div className="flex align-items-center text-700 flex-wrap">
+            {/* <div className="flex align-items-center text-700 flex-wrap">
               <div className="mr-5 flex align-items-center mt-3">
                 <i className="pi pi-users mr-2"></i>
                 <span>332 Active Users</span>
@@ -21,7 +21,7 @@ function header() {
                 <i className="pi pi-clock mr-2"></i>
                 <span>2.32m Avg. Duration</span>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="mt-3 lg:mt-0">
             <Button

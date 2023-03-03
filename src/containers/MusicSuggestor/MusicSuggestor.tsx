@@ -4,14 +4,16 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Divider } from "primereact/divider";
+import { Checkbox } from 'primereact/checkbox';
 import styles from "./styles.module.css";
 
 function MusicSuggestor() {
-  const [songTitle, setSongTitle] = useState();
+  const [songTitles, setSongTitles] = useState();
   const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [playlistLength, setCount] = useState();
+  const [enableRefine, setEnableRefine] = useState(false);
 
   async function getSuggestions(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,18 +23,13 @@ function MusicSuggestor() {
     setIsError(false);
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "https://b8t1bievja.execute-api.us-east-1.amazonaws.com/song",
-        {
-          // const response = await axios.post("http://localhost:4000/song", {
-          titles: songTitle,
-          length: playlistLength,
-        }
-      );
+       const response = await axios.post("https://b8t1bievja.execute-api.us-east-1.amazonaws.com/song", {
+      // const response = await axios.post("http://localhost:4000/song", {
+        titles: songTitles,
+        length: playlistLength,
+      });
       if (response.data.suggestions) {
-        const suggestionsArray = response.data.suggestions
-          .split("\n")
-          .filter((suggestion: string) => suggestion.length > 0);
+        const suggestionsArray = JSON.parse(response.data.suggestions);
         setSuggestions(suggestionsArray);
       } else {
         setIsError(true);
@@ -81,24 +78,25 @@ function MusicSuggestor() {
             <span className="p-input-icon-left w-full p-float-label">
               <i className="pi pi-search" />
               <InputText
-                id="songTitle"
+                id="songTitles"
                 className="p-inputtext-lg w-full"
                 aria-label="Song titles"
-                value={songTitle}
-                onChange={(e) => setSongTitle(e.target.value)}
+                value={songTitles}
+                onChange={(e) => setSongTitles(e.target.value)}
                 disabled={isLoading}
                 required
               />
-              <label htmlFor="songTitle">Song titles</label>
+              <label htmlFor="songTitles">Song titles</label>
             </span>
           </div>
           <Button
+            loading={isLoading}
             className="p-button-lg inline-block"
             type="submit"
             disabled={isLoading}
-          >
-            Submit
-          </Button>
+            label="Get Suggestions"
+            aria-label="Get Suggestions"
+          />
         </form>
       </div>
       <Divider />
@@ -111,10 +109,21 @@ function MusicSuggestor() {
           suggestions.map((suggestion) => {
             return (
               <span className="m-1" key={suggestions.indexOf(suggestion)}>
-                {suggestion}
+               {console.log(suggestion)}
+               {suggestion.title} - {suggestion.artist}
+                {/* <Checkbox value={suggestion} onChange={(e) => setSongTitles(`${songTitles}, ${suggestion}`)} /> */}
               </span>
             );
           })}
+        <Divider />
+        {suggestions.length > 0 && (
+          <Button
+            className="p-button-lg inline-block"
+            icon="pi pi-check"
+            label="Refine"
+            onClick={(e) => setEnableRefine(true)}
+          />
+        )}
       </div>
     </main>
   );
