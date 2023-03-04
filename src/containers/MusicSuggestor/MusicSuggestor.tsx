@@ -8,46 +8,36 @@ import { Checkbox } from "primereact/checkbox";
 import styles from "./styles.module.css";
 import { Slider } from "primereact/slider";
 import { Knob } from "primereact/knob";
+import {
+  useSongSuggestionsMutation,
+  TSongSuggestionsRequest,
+} from "../../data-provider";
 
 function MusicSuggestor() {
   const [songTitles, setSongTitles] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [playlistLength, setPlaylistLength] = useState(10);
   const [temperature, setTemperature] = useState(5);
   const [enableRefine, setEnableRefine] = useState(false);
 
-  async function getSuggestions(e: React.FormEvent<HTMLFormElement>) {
+  const songSuggestionsMutation = useSongSuggestionsMutation();
+
+  function getSuggestions(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (suggestions.length > 0) {
       setSuggestions([]);
     }
-    setIsError(false);
-    setIsLoading(true);
-    try {
-       const response = await axios.post("https://b8t1bievja.execute-api.us-east-1.amazonaws.com/song", {
-      // const response = await axios.post("http://localhost:4000/song", {
-        titles: songTitles,
-        length: playlistLength,
-        temperature: temperature * 0.1,
-      });
-      if (response.data.suggestions) {
-        const suggestionsArray = JSON.parse(response.data.suggestions);
-        setSuggestions(suggestionsArray);
-      } else {
-        setIsError(true);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      setIsError(true);
-      console.error(error);
-    }
-
-    setIsLoading(false);
+    const requestData: TSongSuggestionsRequest = {
+      titles: songTitles,
+      length: 10,
+      temperature: temperature * 0.1,
+    };
+    songSuggestionsMutation.mutate(requestData);
   }
 
+  if(songSuggestionsMutation.isSuccess) {
+    console.log(songSuggestionsMutation.data)
+  }
   return (
     <main className={styles.main}>
       <div>
@@ -57,9 +47,7 @@ function MusicSuggestor() {
           ordered by relative similarity. You may enter multiple titles and/or
           artists. Use the temperature control to adjust the level of
           creativity. Higher values like 8 will make the output more random,
-          while lower values like 2 will make it more focused and
-          deterministic. Once you've generated a playlist, you can click "Refine"
-          to further refine your playlist.
+          while lower values like 2 will make it more focused and deterministic.
         </p>
         <form
           className="flex flex-column gap-3 py-4"
@@ -91,7 +79,6 @@ function MusicSuggestor() {
                 aria-label="Song titles"
                 value={songTitles}
                 onChange={(e) => setSongTitles(e.target.value)}
-                disabled={isLoading}
                 required
               />
               <label htmlFor="songTitles">Song titles</label>
@@ -111,10 +98,10 @@ function MusicSuggestor() {
             </div>
           </div>
           <Button
-            loading={isLoading}
+            loading={songSuggestionsMutation.isLoading}
             className="p-button-lg inline-block"
             type="submit"
-            disabled={isLoading}
+            disabled={songSuggestionsMutation.isLoading}
             label="Get Suggestions"
             aria-label="Get Suggestions"
           />
@@ -122,12 +109,14 @@ function MusicSuggestor() {
       </div>
       <Divider />
       <div className={styles.suggestionsContainer}>
-        {isLoading && (
+        {songSuggestionsMutation.isLoading && (
           <i className="pi pi-spin pi-cog" style={{ fontSize: "3rem" }}></i>
         )}
-        {isError && <p>Something went wrong. Please try again.</p>}
-        {suggestions &&
-          suggestions.map((suggestion) => {
+        {songSuggestionsMutation.isError && (
+          <p>Something went wrong. Please try again.</p>
+        )}
+        {songSuggestionsMutation.isSuccess &&
+         JSON.parse(songSuggestionsMutation.data.suggestions).map((suggestion) => {
             return (
               <span className="m-1" key={suggestions.indexOf(suggestion)}>
                 {suggestion.title} - {suggestion.artist}
