@@ -6,7 +6,7 @@ function header() {
         <div className="flex align-items-start flex-column sm:justify-content-between sm:flex-row">
           <div>
             <div className="font-medium text-3xl text-900 text-primary">
-              AI Powered Playlist Generator
+              ChatGPT Powered Playlist Creator
             </div>
             {/* <div className="flex align-items-center text-700 flex-wrap">
               <div className="mr-5 flex align-items-center mt-3">
@@ -25,7 +25,7 @@ function header() {
           </div>
           <div className="mt-3 lg:mt-0">
             <Button
-              label="Add"
+              label="Login"
               className="p-button-outlined mr-2"
               icon="pi pi-user-plus"
             />
