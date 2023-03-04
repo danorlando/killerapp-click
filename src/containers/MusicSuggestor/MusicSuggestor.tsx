@@ -1,22 +1,21 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
-import { InputNumber } from "primereact/inputnumber";
 import { Divider } from "primereact/divider";
 import { Checkbox } from "primereact/checkbox";
 import styles from "./styles.module.css";
-import { Slider } from "primereact/slider";
 import { Knob } from "primereact/knob";
+import { PendingElement } from '../../components';
 import {
   useSongSuggestionsMutation,
   TSongSuggestionsRequest,
+  TSong,
+  getSpotifyTrack
 } from "../../data-provider";
 
 function MusicSuggestor() {
   const [songTitles, setSongTitles] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [playlistLength, setPlaylistLength] = useState(10);
   const [temperature, setTemperature] = useState(5);
   const [enableRefine, setEnableRefine] = useState(false);
 
@@ -35,9 +34,11 @@ function MusicSuggestor() {
     songSuggestionsMutation.mutate(requestData);
   }
 
-  if(songSuggestionsMutation.isSuccess) {
-    console.log(songSuggestionsMutation.data)
+  const onLoadTrack = ({ artist, title }: TSong) => {
+    const queryParams = encodeURI(`track:${title} artist:${artist}`);
+    const respose = getSpotifyTrack(queryParams);
   }
+
   return (
     <main className={styles.main}>
       <div>
@@ -54,22 +55,6 @@ function MusicSuggestor() {
           onSubmit={(e) => getSuggestions(e)}
         >
           <div className="flex flex-row gap-3">
-            {/* <span className="p-float-label">
-              <InputNumber
-                inputId="playlistLength"
-                className="p-inputtext-lg"
-                aria-label="Playlist length"
-                value={playlistLength}
-                showButtons
-                onValueChange={(e) => setPlaylistLength(e.value)}
-                disabled={isLoading}
-                min={1}
-                max={10}
-                suffix=" songs"
-                required
-              />
-              <label htmlFor="playlistLength">Playlist length</label>
-            </span> */}
             <span className="p-input-icon-left w-full p-float-label">
               <i className="pi pi-search" />
               <InputTextarea
@@ -110,7 +95,7 @@ function MusicSuggestor() {
       <Divider />
       <div className={styles.suggestionsContainer}>
         {songSuggestionsMutation.isLoading && (
-          <i className="pi pi-spin pi-cog" style={{ fontSize: "3rem" }}></i>
+          <PendingElement />
         )}
         {songSuggestionsMutation.isError && (
           <p>Something went wrong. Please try again.</p>
@@ -118,10 +103,11 @@ function MusicSuggestor() {
         {songSuggestionsMutation.isSuccess &&
          JSON.parse(songSuggestionsMutation.data.suggestions).map((suggestion) => {
             return (
-              <span className="m-1" key={suggestions.indexOf(suggestion)}>
-                {suggestion.title} - {suggestion.artist}
+              <div className="flex flex-row gap-3 m-1" key={suggestions.indexOf(suggestion)}>
+                <span>{suggestion.title} - {suggestion.artist}</span>
+                <Button icon="pi pi-plus" onClick={(e) => onLoadTrack(suggestion.title, suggestion.artist)} />
                 {/* <Checkbox value={suggestion} onChange={(e) => setSongTitles(`${songTitles}, ${suggestion}`)} /> */}
-              </span>
+              </div>
             );
           })}
         <Divider />

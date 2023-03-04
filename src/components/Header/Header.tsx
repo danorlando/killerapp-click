@@ -1,5 +1,8 @@
 import { Button } from "primereact/button";
+import { useAuthServiceContext } from "../../contexts";
+
 function header() {
+  const { loginWithRedirect, logout, isAuthenticated } = useAuthServiceContext();
   return (
     <header>
       <div className="surface-0">
@@ -24,11 +27,23 @@ function header() {
             </div> */}
           </div>
           <div className="mt-3 lg:mt-0">
-            <Button
-              label="Login"
-              className="p-button-outlined mr-2"
-              icon="pi pi-user-plus"
-            />
+            {!isAuthenticated() ? (
+              <Button
+                label="Login"
+                aria-label="Login"
+                onClick={() => loginWithRedirect()}
+                className="p-button-outlined mr-2"
+                icon="pi pi-user-plus"
+              />
+            ) : (
+              <Button
+                label="Logout"
+                aria-label="Logout"
+                onClick={() => logout()}
+                className="p-button-outlined mr-2"
+                icon="pi pi-user-plus"
+              />
+            )}
             <Button label="Save" icon="pi pi-check" />
           </div>
         </div>
