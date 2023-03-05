@@ -1,2 +1,1 @@
-export * from './AuthServiceContext';
-export * from './authConfig';
+export * from "./AuthServiceContext";

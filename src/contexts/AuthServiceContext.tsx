@@ -33,14 +33,13 @@ export const useAuthServiceContext = (): TAuthContext => {
 
 export const AuthServiceProvider: React.FC<TAuthServiceProviderProps> = ({
   children,
-  authConfig,
   config,
 }) => {
   redirectUri.setConfig(config);
   return (
     <Auth0Provider
-      domain={authConfig.domain}
-      clientId={authConfig.clientId}
+      domain={import.meta.env.VITE_AUTH0_DOMAIN}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: `${window.location.origin}/callback`,
       }}

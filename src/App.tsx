@@ -3,11 +3,10 @@ import Root, { ErrorPage, Callback } from "./routes";
 import {
   createBrowserRouter,
   RouterProvider,
-  BrowserRouter,
 } from "react-router-dom";
 import PrimeReact from "primereact/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthServiceProvider, authConfig } from "./contexts";
+import { AuthServiceProvider } from "./contexts";
 import { PendingElement } from "./components";
 import { subscribeToNewTokenReceived, setTokenHeader } from "./data-provider";
 
@@ -36,7 +35,7 @@ function App() {
       errorElement: <ErrorPage />,
       children: [
         {
-          path: "/home",
+          path: "/",
           element: <MusicSuggestor />,
         },
         {
@@ -49,7 +48,6 @@ function App() {
 
   return (
     <AuthServiceProvider
-      authConfig={authConfig}
       config={{
         getRedirectUri: () =>
           `${window.location.pathname}${window.location.search}`,
