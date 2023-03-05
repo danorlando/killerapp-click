@@ -3,11 +3,11 @@ import Root, { ErrorPage, Callback } from "./routes";
 import {
   createBrowserRouter,
   RouterProvider,
-  useNavigate,
+  BrowserRouter,
 } from "react-router-dom";
 import PrimeReact from "primereact/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthServiceProvider } from "./contexts";
+import { AuthServiceProvider, authConfig } from "./contexts";
 import { PendingElement } from "./components";
 import { subscribeToNewTokenReceived, setTokenHeader } from "./data-provider";
 
@@ -29,8 +29,6 @@ PrimeReact.ripple = true;
 const queryClient = new QueryClient();
 
 function App() {
-  const navigate = useNavigate();
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -38,27 +36,29 @@ function App() {
       errorElement: <ErrorPage />,
       children: [
         {
-          path: "/",
+          path: "/home",
           element: <MusicSuggestor />,
         },
         {
           path: "/callback",
-          element: (
-            <Callback navigate={navigate} pendingElement={<PendingElement />} />
-          ),
+          element: <Callback pendingElement={<PendingElement />} />,
         },
       ],
     },
   ]);
 
   return (
-    <div className="App">
-      <AuthServiceProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthServiceProvider>
-    </div>
+    <AuthServiceProvider
+      authConfig={authConfig}
+      config={{
+        getRedirectUri: () =>
+          `${window.location.pathname}${window.location.search}`,
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} fallbackElement={<PendingElement />} />
+      </QueryClientProvider>
+    </AuthServiceProvider>
   );
 }
 

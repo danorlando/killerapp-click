@@ -1,17 +1,17 @@
-import React, {useEffect} from 'react';
-import {useAuthServiceContext} from '../../contexts/AuthServiceContext';
-import {NavigateFunction} from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useAuthServiceContext } from "../../contexts/AuthServiceContext";
 
-type TCallbackProps = {navigate: NavigateFunction; pendingElement: React.ReactNode};
+type TCallbackProps = { pendingElement: React.ReactNode };
 
-function Callback({navigate, pendingElement}: TCallbackProps) {
-  const {handleRedirectCallback, isAuthenticated} = useAuthServiceContext();
+function Callback({ pendingElement }: TCallbackProps) {
+  const { handleRedirectCallback, isAuthenticated } = useAuthServiceContext();
   const params = new URLSearchParams(window.location.search);
-  const errorDescription = params.get('error_description');
+  const errorDescription = params.get("error_description");
+
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      handleRedirectCallback({navigate});
+      handleRedirectCallback();
     }
   }, [isAuthenticated()]); // eslint-disable-line react-hooks/exhaustive-deps
 

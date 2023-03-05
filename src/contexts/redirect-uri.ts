@@ -1,19 +1,11 @@
-export type TConfig = {
-  basepath: string;
-  homepath: string;
-  getRedirectUri: () => string;
-};
+import {TConfig} from './types';
 
 let _config: TConfig;
 
-const LOCAL_STORAGE_KEY = 'redirectUri';
+const LOCAL_STORAGE_KEY = 'redirect_uri';
 
 function setConfig(config: TConfig): void {
   _config = config;
-}
-
-function getBasepath(): string {
-  return _config.basepath;
 }
 
 function saveCurrentUri(): void {
@@ -25,12 +17,11 @@ function getSavedUri(): string | null {
 }
 
 function getRedirectTo(): string {
-  return getSavedUri() || _config.homepath;
+  return getSavedUri() || '/';
 }
 
 export default {
   setConfig,
-  getBasepath,
   saveCurrentUri,
   getRedirectTo,
 };
