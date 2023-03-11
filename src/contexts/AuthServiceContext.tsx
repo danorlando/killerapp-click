@@ -3,18 +3,16 @@ import React from "react";
 import { triggerNewTokenEvent } from "../data-provider/events";
 import { TAuthContext, TAuthServiceProviderProps } from "./types";
 import redirectUri from "./redirect-uri";
-import { useNavigate } from "react-router-dom";
 import { setTokenHeader } from "../data-provider";
-import axios from "axios";
 
 export const useAuthServiceContext = (): TAuthContext => {
   const context = useAuth0();
-  const navigate = useNavigate();
 
   return {
     renewTokenSilently: async () => {
       const token = await context.getAccessTokenSilently();
-      triggerNewTokenEvent(token);
+      //  triggerNewTokenEvent(token);
+      setTokenHeader(token);
     },
     logout: () => {
       context.logout({ logoutParams: { returnTo: window.location.origin } });
@@ -24,13 +22,17 @@ export const useAuthServiceContext = (): TAuthContext => {
       redirectUri.saveCurrentUri();
       context.loginWithRedirect();
     },
-    handleRedirectCallback: async () => {
+    handleRedirectCallback: async ({ history }) => {
+      debugger;
       await context.handleRedirectCallback();
       const token = await context.getAccessTokenSilently();
-      console.log("handleRedirectCallback called, setting token header to: ", token);
+      console.log(
+        "handleRedirectCallback called, setting token header to: ",
+        token
+      );
       setTokenHeader(token);
       // triggerNewTokenEvent(token);
-      navigate(redirectUri.getRedirectTo(), { replace: true });
+      history.replace(redirectUri.getRedirectTo(), "auth.callback");
     },
   };
 };
@@ -60,6 +62,7 @@ export const AuthServiceProvider: React.FC<TAuthServiceProviderProps> = ({
       authorizationParams={{
         redirect_uri: `${window.location.origin}/callback`,
         audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        skipRedirectCallback: true,
       }}
     >
       {children}

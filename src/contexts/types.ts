@@ -1,4 +1,4 @@
-import { NavigateFunction } from "react-router-dom";
+import { History } from "history";
 
 export type TUseContext = () => TAuthContext;
 
@@ -14,7 +14,7 @@ export type TConfig = {
 export type TAuthContext = {
   isAuthenticated: () => boolean;
   loginWithRedirect: () => Promise<void>;
-  handleRedirectCallback: () => Promise<void>;
+  handleRedirectCallback: ({history}: {history: Pick<History, 'replace'>}) => Promise<void>;
   logout: () => void;
   renewTokenSilently: () => Promise<void>;
   signoutRedirectCallback?: (callback: () => void) => Promise<void>;

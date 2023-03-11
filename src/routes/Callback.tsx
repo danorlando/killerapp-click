@@ -1,16 +1,20 @@
 import React, { useEffect } from "react";
-import { useAuthServiceContext } from "../../contexts/AuthServiceContext";
+import { useAuthServiceContext } from "../contexts";
+import { History } from "history";
 
-type TCallbackProps = { pendingElement: React.ReactNode };
+type TCallbackProps = {
+  history: Pick<History, "replace">;
+  pendingElement: React.ReactNode;
+};
 
-function Callback({ pendingElement }: TCallbackProps) {
+function Callback({ history, pendingElement }: TCallbackProps) {
   const { handleRedirectCallback, isAuthenticated } = useAuthServiceContext();
   const params = new URLSearchParams(window.location.search);
   const errorDescription = params.get("error_description");
 
   useEffect(() => {
     if (!isAuthenticated()) {
-     handleRedirectCallback();
+      handleRedirectCallback({ history });
     }
   }, [isAuthenticated()]); // eslint-disable-line react-hooks/exhaustive-deps
 

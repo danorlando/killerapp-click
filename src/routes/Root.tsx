@@ -1,11 +1,17 @@
-import { Outlet } from "react-router-dom";
-import { Header } from "../components";
+import { Header, Page, ErrorBoundary } from "../components";
+import { Outlet } from "@tanstack/react-location";
 
-export default function Root() {
+export function Root() {
   return (
-    <>
-      <Header />
-      <Outlet />
-    </>
+    <ErrorBoundary>
+      <Page.Wrapper>
+        <Page.ContentWrapper>
+          <Header />
+          <Page.MainContent>
+            <Outlet />
+          </Page.MainContent>
+        </Page.ContentWrapper>
+      </Page.Wrapper>
+    </ErrorBoundary>
   );
 }

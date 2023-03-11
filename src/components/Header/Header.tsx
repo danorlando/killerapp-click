@@ -1,6 +1,6 @@
 import { Button } from "primereact/button";
 import { useAuthServiceContext } from "../../contexts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-location";
 
 function header() {
   const { loginWithRedirect, logout, isAuthenticated } =
@@ -53,7 +53,7 @@ function header() {
                   className="p-button-outlined mr-2"
                   icon="pi pi-user-plus"
                   onClick={() => {
-                    navigate("/users");
+                    navigate({ to: './users', replace: true })
                   }}
                 ></Button>
               </>

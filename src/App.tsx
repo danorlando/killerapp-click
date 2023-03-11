@@ -1,12 +1,15 @@
-import { MusicSuggestor, ManageUsers } from "./containers";
-import Root, { ErrorPage, Callback } from "./routes";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  Outlet,
+  ReactLocation,
+  Router,
+  createBrowserHistory,
+} from "@tanstack/react-location";
 import PrimeReact from "primereact/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthServiceProvider, AuthProvider } from "./contexts";
-import { PendingElement } from "./components";
+import { AuthServiceProvider } from "./contexts";
 import { subscribeToNewTokenReceived, setTokenHeader } from "./data-provider";
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import getRoutes from "./routes/Routes";
 subscribeToNewTokenReceived(setTokenHeader);
 
 //theme
@@ -23,30 +26,10 @@ import "./App.css";
 PrimeReact.ripple = true;
 
 const queryClient = new QueryClient();
+const history = createBrowserHistory();
+const location = new ReactLocation({ history });
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Root />,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-          path: "/",
-          element: <MusicSuggestor />,
-        },
-        {
-          path: "/users",
-          element: <ManageUsers />,
-        },
-        {
-          path: "/callback",
-          element: <Callback pendingElement={<PendingElement />} />,
-        },
-      ],
-    },
-  ]);
-
   return (
     <QueryClientProvider client={queryClient}>
       <AuthServiceProvider
@@ -55,8 +38,14 @@ function App() {
             `${window.location.pathname}${window.location.search}`,
         }}
       >
-        <RouterProvider router={router} fallbackElement={<PendingElement />} />
+        <Router
+          location={location}
+          routes={getRoutes({ history, queryClient })}
+        >
+          <Outlet />
+        </Router>
       </AuthServiceProvider>
+      <ReactQueryDevtools initialIsOpen={false} position={"bottom-right"} />
     </QueryClientProvider>
   );
 }
