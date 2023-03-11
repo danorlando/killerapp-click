@@ -1,8 +1,11 @@
 import { Button } from "primereact/button";
 import { useAuthServiceContext } from "../../contexts";
+import { useNavigate } from "react-router-dom";
 
 function header() {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuthServiceContext();
+  const { loginWithRedirect, logout, isAuthenticated } =
+    useAuthServiceContext();
+  const navigate = useNavigate();
   return (
     <header>
       <div className="surface-0">
@@ -36,13 +39,24 @@ function header() {
                 icon="pi pi-user-plus"
               />
             ) : (
-              <Button
-                label="Logout"
-                aria-label="Logout"
-                onClick={() => logout()}
-                className="p-button-outlined mr-2"
-                icon="pi pi-user-plus"
-              />
+              <>
+                <Button
+                  label="Logout"
+                  aria-label="Logout"
+                  onClick={() => logout()}
+                  className="p-button-outlined mr-2"
+                  icon="pi pi-user-plus"
+                />
+                <Button
+                  label="Manage Users"
+                  aria-label="Manage Users"
+                  className="p-button-outlined mr-2"
+                  icon="pi pi-user-plus"
+                  onClick={() => {
+                    navigate("/users");
+                  }}
+                ></Button>
+              </>
             )}
             <Button label="Save" icon="pi pi-check" />
           </div>

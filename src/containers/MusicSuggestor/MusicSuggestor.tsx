@@ -36,7 +36,8 @@ function MusicSuggestor() {
 
   const onLoadTrack = ({ artist, title }: TSong) => {
     const queryParams = encodeURI(`track:${title} artist:${artist}`);
-    const respose = getSpotifyTrack(queryParams);
+    const response = getSpotifyTrack(queryParams);
+    console.log(response);
   }
 
   return (
@@ -101,11 +102,11 @@ function MusicSuggestor() {
           <p>Something went wrong. Please try again.</p>
         )}
         {songSuggestionsMutation.isSuccess &&
-         JSON.parse(songSuggestionsMutation.data.suggestions).map((suggestion) => {
+         JSON.parse(songSuggestionsMutation.data.suggestions).map((suggestion:TSong, index:number) => {
             return (
-              <div className="flex flex-row gap-3 m-1" key={suggestions.indexOf(suggestion)}>
+              <div className="flex flex-row gap-4 m-2" key={index}>
                 <span>{suggestion.title} - {suggestion.artist}</span>
-                <Button icon="pi pi-plus" onClick={(e) => onLoadTrack(suggestion.title, suggestion.artist)} />
+                <Button icon="pi pi-plus" onClick={(e) => onLoadTrack({title: suggestion.title, artist: suggestion.artist})} />
                 {/* <Checkbox value={suggestion} onChange={(e) => setSongTitles(`${songTitles}, ${suggestion}`)} /> */}
               </div>
             );

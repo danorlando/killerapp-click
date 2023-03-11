@@ -9,3 +9,23 @@ export const songSuggestions = () => {
 export const getSpotifyTrackEndpoint = (query: string) => {
   return `${SPOTIFY_API_BASEURL}/search?q=${query}&type=track`
 }
+
+export const getUsers = () => {
+  return `http://localhost:4000/users`
+}
+
+export const createUser = () => {
+  return `http://localhost:4000/users`
+}
+
+export const getUserById = (id: string) => {
+  return `http://localhost:4000/users/${id}`
+}
+
+export const updateUserById = (id: string) => {
+  return `http://localhost:4000/users/${id}`
+}
+
+export const deleteUserById = (id: string) => {
+  return `http://localhost:4000/users/${id}`
+}

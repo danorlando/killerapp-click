@@ -8,10 +8,9 @@ function Callback({ pendingElement }: TCallbackProps) {
   const params = new URLSearchParams(window.location.search);
   const errorDescription = params.get("error_description");
 
-
   useEffect(() => {
     if (!isAuthenticated()) {
-      handleRedirectCallback();
+     handleRedirectCallback();
     }
   }, [isAuthenticated()]); // eslint-disable-line react-hooks/exhaustive-deps
 

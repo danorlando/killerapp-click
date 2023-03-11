@@ -1,12 +1,9 @@
-import { MusicSuggestor } from "./containers";
+import { MusicSuggestor, ManageUsers } from "./containers";
 import Root, { ErrorPage, Callback } from "./routes";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PrimeReact from "primereact/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthServiceProvider } from "./contexts";
+import { AuthServiceProvider, AuthProvider } from "./contexts";
 import { PendingElement } from "./components";
 import { subscribeToNewTokenReceived, setTokenHeader } from "./data-provider";
 
@@ -39,6 +36,10 @@ function App() {
           element: <MusicSuggestor />,
         },
         {
+          path: "/users",
+          element: <ManageUsers />,
+        },
+        {
           path: "/callback",
           element: <Callback pendingElement={<PendingElement />} />,
         },
@@ -47,16 +48,16 @@ function App() {
   ]);
 
   return (
-    <AuthServiceProvider
-      config={{
-        getRedirectUri: () =>
-          `${window.location.pathname}${window.location.search}`,
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthServiceProvider
+        config={{
+          getRedirectUri: () =>
+            `${window.location.pathname}${window.location.search}`,
+        }}
+      >
         <RouterProvider router={router} fallbackElement={<PendingElement />} />
-      </QueryClientProvider>
-    </AuthServiceProvider>
+      </AuthServiceProvider>
+    </QueryClientProvider>
   );
 }
 

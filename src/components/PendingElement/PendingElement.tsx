@@ -1,7 +1,11 @@
-function PendingElement () {
+import { Container } from "../Container/Container";
+
+function PendingElement() {
   return (
-    <i className="pi pi-spin pi-cog m-2" style={{ fontSize: "3rem" }}></i>
-  )
+    <Container>
+      <i className="pi pi-spin pi-cog m-5" style={{ fontSize: "3rem" }}></i>
+    </Container>
+  );
 }
 
 export default PendingElement;
