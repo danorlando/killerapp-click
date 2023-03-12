@@ -1,16 +1,11 @@
-import { MusicSuggestor, ManageUsers } from "./containers";
-import Root from "./routes/Root";
-import {ErrorPage} from "./routes/ErrorPage";
-import Callback from "./routes/Callback";
-import SilentRenew from "./routes/SilentRenew";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PrimeReact from "primereact/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthServiceProvider, AuthProvider } from "./contexts";
-import { PendingElement } from "./components";
-import { subscribeToNewTokenReceived, setTokenHeader } from "./data-provider";
-
-subscribeToNewTokenReceived(setTokenHeader);
+import { PendingElement, Container, AuthenticationGuard } from "./components";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Route, Routes } from "react-router-dom";
+import { MusicSuggestor, ManageUsers } from "./containers";
+import Callback from "./routes/Callback";
+import { NotFound } from "./routes/NotFound";
 
 //theme
 import "primereact/resources/themes/luna-blue/theme.css";
@@ -28,42 +23,29 @@ PrimeReact.ripple = true;
 const queryClient = new QueryClient();
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Root />,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-          path: "/",
-          element: <MusicSuggestor />,
-        },
-        {
-          path: "/users",
-          element: <ManageUsers />,
-        },
-        {
-          path: "/callback",
-          element: <Callback pendingElement={<PendingElement />} />,
-        },
-        {
-          path: "/silent-renew",
-          element: <SilentRenew pendingElement={<PendingElement />} />,
-        },
-      ],
-    },
-  ]);
+  // const { isLoading } = useAuth0();
 
+  // if (isLoading) {
+  //   return (
+  //     <Container>
+  //       <PendingElement />
+  //     </Container>
+  //   );
+  // }
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthServiceProvider
-        config={{
-          getRedirectUri: () =>
-            `${window.location.pathname}${window.location.search}`,
-        }}
-      >
-        <RouterProvider router={router} fallbackElement={<PendingElement />} />
-      </AuthServiceProvider>
+      <Routes>
+        <Route path="/" element={<MusicSuggestor />} />
+        <Route
+          path="/users"
+          element={<AuthenticationGuard component={ManageUsers} />}
+        />
+        <Route
+          path="/callback"
+          element={<Callback pendingElement={<PendingElement />} />}
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </QueryClientProvider>
   );
 }

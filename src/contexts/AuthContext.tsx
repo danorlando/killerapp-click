@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   if (!(domain && clientId && redirectUri && audience)) {
+    console.log("Missing environment variables");
     return null;
   }
 
