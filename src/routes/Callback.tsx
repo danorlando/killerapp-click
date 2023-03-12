@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useAuthServiceContext } from "../../contexts/AuthServiceContext";
+import { useAuthServiceContext } from "../contexts/AuthServiceContext";
 
 type TCallbackProps = { pendingElement: React.ReactNode };
 

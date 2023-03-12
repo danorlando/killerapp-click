@@ -1,5 +1,8 @@
 import { MusicSuggestor, ManageUsers } from "./containers";
-import Root, { ErrorPage, Callback } from "./routes";
+import Root from "./routes/Root";
+import {ErrorPage} from "./routes/ErrorPage";
+import Callback from "./routes/Callback";
+import SilentRenew from "./routes/SilentRenew";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PrimeReact from "primereact/api";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -42,6 +45,10 @@ function App() {
         {
           path: "/callback",
           element: <Callback pendingElement={<PendingElement />} />,
+        },
+        {
+          path: "/silent-renew",
+          element: <SilentRenew pendingElement={<PendingElement />} />,
         },
       ],
     },
