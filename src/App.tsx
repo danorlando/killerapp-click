@@ -35,7 +35,7 @@ function App() {
       errorElement: <ErrorPage />,
       children: [
         {
-          path: "/",
+          path: "/gpt-playlist",
           element: <MusicSuggestor />,
         },
         {
@@ -43,7 +43,7 @@ function App() {
           element: <ManageUsers />,
         },
         {
-          path: "/gpt",
+          path: "/gpt-plus",
           element: <EnhancedGPT />,
         },
         {

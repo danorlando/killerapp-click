@@ -11,7 +11,7 @@ function header() {
       <div className="surface-0">
         <div className="flex align-items-start flex-column sm:justify-content-between sm:flex-row">
           <div>
-            <div className="font-medium text-3xl text-900 text-primary mx-3">
+            <div className="font-medium text-3xl text-900 text-primary m-3">
               AI Power Apps
             </div>
             {/* <div className="flex align-items-center text-700 flex-wrap">
@@ -29,13 +29,29 @@ function header() {
               </div>
             </div> */}
           </div>
-          <div className="mt-3 lg:mt-0">
+          <div className="flex gap-3 my-3 mx-3 justify-content-center">
+            <Button
+              label="ChatGPT+"
+              aria-label="Chat GPT plus"
+              className="p-button-outlined"
+              onClick={() => {
+                navigate("/gpt-plus");
+              }}
+            />
+            <Button
+              label="GPTPlaylist"
+              aria-label="GPT playlist"
+              className="p-button-outlined"
+              onClick={() => {
+                navigate("/gpt-playlist");
+              }}
+            />
             {!isAuthenticated() ? (
               <Button
                 label="Login"
                 aria-label="Login"
                 onClick={() => loginWithRedirect()}
-                className="p-button-outlined mr-2"
+                className="p-button-outlined"
                 icon="pi pi-user-plus"
               />
             ) : (
@@ -44,13 +60,13 @@ function header() {
                   label="Logout"
                   aria-label="Logout"
                   onClick={() => logout()}
-                  className="p-button-outlined mr-2"
+                  className="p-button-outlined"
                   icon="pi pi-user-plus"
                 />
                 <Button
                   label="Manage Users"
                   aria-label="Manage Users"
-                  className="p-button-outlined mr-2"
+                  className="p-button-outlined"
                   icon="pi pi-user-plus"
                   onClick={() => {
                     navigate("/users");
