@@ -7,9 +7,9 @@ export type TChatMessage = {
   message: string;
 };
 
-function ChatMessage({chatMessage, key}: {chatMessage: TChatMessage, key: number}) {
+function ChatMessage({chatMessage}: {chatMessage: TChatMessage}) {
   return (
-    <div key={key}
+    <div
       className={classNames(
         styles.chatLogMessage,
         `${chatMessage.user === "gpt" && styles.chatgpt}`

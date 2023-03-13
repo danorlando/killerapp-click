@@ -36,8 +36,25 @@ export type TOperationType = 'Updated' | 'Created' | 'Deleted';
 
 export type TChat = {
   prompt: string;
+  model?: string;
 };
 
 export type TChatResponse = {
   response: string;
+};
+
+export type TOpenAIModels = {
+  models: {
+    object: string;
+    data: TOpenAIModel[];
+  }
+};
+
+export type TOpenAIModel = {
+  object: string;
+  id: string;
+  ready: boolean;
+  owner: string;
+  created: string | null;
+  permissions: string[] | null;
 };

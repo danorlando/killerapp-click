@@ -11,8 +11,8 @@ function header() {
       <div className="surface-0">
         <div className="flex align-items-start flex-column sm:justify-content-between sm:flex-row">
           <div>
-            <div className="font-medium text-3xl text-900 text-primary">
-              ChatGPT Powered Playlist Creator
+            <div className="font-medium text-3xl text-900 text-primary mx-3">
+              AI Power Apps
             </div>
             {/* <div className="flex align-items-center text-700 flex-wrap">
               <div className="mr-5 flex align-items-center mt-3">

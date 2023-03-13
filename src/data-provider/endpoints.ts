@@ -33,3 +33,7 @@ export const deleteUserById = (id: string) => {
 export const createChat = () => {
   return `${LOCAL_API_BASEURL}/chat`
 }
+
+export const getOpenAIModels = () => {
+  return `${LOCAL_API_BASEURL}/models`
+}

@@ -33,3 +33,7 @@ export function deleteUserById(id: string): Promise<t.TApiResponse> {
 export function createChat(data: t.TChat): Promise<t.TChatResponse> {
   return request.post(endpoints.createChat(), data);
 }
+
+export function getOpenAIModels(): Promise<t.TOpenAIModels> {
+  return request.get(endpoints.getOpenAIModels());
+}

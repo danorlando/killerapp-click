@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import { PendingElement, Container } from "../../components";
 import { InputTextarea } from "primereact/inputtextarea";
 import "./styles.module.css";
-import classNames from "classnames";
-import ChatGptAvatar from "./ChatGptAvatar";
-import { useCreateChatMutation } from "../../data-provider";
+import {
+  useCreateChatMutation,
+  useGetOpenAIModelsQuery,
+  TOpenAIModel,
+} from "../../data-provider";
 import { Message } from "primereact/message";
 import ChatMessage from "./ChatMessage";
+import { Dropdown } from "primereact/dropdown";
 
 function EnhancedGPT() {
   const [chatInput, setChatInput] = useState("");
@@ -16,17 +19,25 @@ function EnhancedGPT() {
     { user: "gpt", message: "How can I help you today?" },
   ]);
 
+  const [models, setModels] = useState<TOpenAIModel[]>([]);
+  const [selectedModel, setSelectedModel] = useState<TOpenAIModel | undefined>(undefined);
+
+  const getOpenAIModelsQuery = useGetOpenAIModelsQuery();
   const createChatMutation = useCreateChatMutation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createChatMutation.mutate({ prompt: chatInput });
+    createChatMutation.mutate({ prompt: chatInput, model: selectedModel?.id });
     setChatLog([...chatLog, { user: "me", message: chatInput }]);
     setChatInput("");
   };
 
   const clearChat = () => {
     setChatLog([]);
+  };
+
+  const handleModelSelected = (model: TOpenAIModel) => {
+    setSelectedModel(model);
   };
 
   useEffect(() => {
@@ -38,11 +49,30 @@ function EnhancedGPT() {
     }
   }, [createChatMutation.data]);
 
+  useEffect(() => {
+    if (getOpenAIModelsQuery.data) {
+      setModels(getOpenAIModelsQuery.data.models.data);
+    }
+  }, [getOpenAIModelsQuery.data]);
+
   return (
     <div className="flex">
       <aside className={styles.sideMenu}>
         <div className={styles.sideMenuButton} onClick={clearChat}>
           <span>+</span>New Chat
+        </div>
+        <div className={styles.models}>
+          <Dropdown
+            value={selectedModel}
+            onChange={(e) => handleModelSelected(e.value)}
+            options={models}
+            optionLabel="id"
+            placeholder="Open AI Engines"
+            className="w-full md:w-14rem my-4"
+          />
+          <div className="text-left">
+            The model controls the engine used to generate the response from ChatGPT. Davinci tends to produce best results. This chat uses text-davinci-003 as the default engine.
+          </div>
         </div>
       </aside>
       <section className={styles.chatBox}>
