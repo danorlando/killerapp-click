@@ -8,6 +8,7 @@ import { Message } from "primereact/message";
 import styles from "./styles.module.css";
 import { PendingElement, Container } from "../../components";
 import { DataTable } from "primereact/datatable";
+import { Paginator } from "primereact/paginator";
 import {
   TUser,
   TUsersList,
@@ -21,7 +22,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { callExternalApi } from "./external-api.service";
 import axios from "axios";
 
-// const apiServerUrl = import.meta.env.VITE_API_SERVER_URL;
+// const apiServerUrl = import.meta.env.VITE_API_LOCAL_SERVER_URL;
 
 // export const getProtectedResource = async (accessToken) => {
 //   const config = {
@@ -53,41 +54,19 @@ function ManageUsers() {
   const updateUserByIdMutation = useUpdateUserByIdMutation();
   const deleteUserByIdMutation = useDeleteUserByIdMutation();
 
-  // const token = getAccessTokenSilently();
-  // if (token) {
-  //   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  // } else {
-  //   delete axios.defaults.headers.common["Authorization"];
-  // }
-
   useEffect(() => {
     if (getUsersQuery.data) {
       setUsers(getUsersQuery.data.users);
     }
   }, [getUsersQuery.data]);
 
-  // useEffect(() => {
-  //   let isMounted = true;
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
 
-  //   const getUsers = async () => {
-  //     const accessToken = await getAccessTokenSilently();
-  //     const { data, error } = await getProtectedResource(accessToken);
-
-  //     if (!isMounted) {
-  //       return;
-  //     }
-
-  //     if (data) {
-  //       setUsers(data);
-  //     }
-  //   }
-
-  //   getUsers();
-
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, [getAccessTokenSilently]);
+  const onPageChange = (event) => {
+      setFirst(event.first);
+      setRows(event.rows);
+  };
 
   return (
     <Container>
@@ -99,6 +78,7 @@ function ManageUsers() {
         />
       )}
       {getUsersQuery.data && (
+        <div className={styles.card}>
         <DataTable value={users} stripedRows tableStyle={{ minWidth: "50rem" }}>
           <Column field="id" header="ID"></Column>
           <Column field="firstName" header="First Name"></Column>
@@ -108,6 +88,8 @@ function ManageUsers() {
           <Column field="createdAt" header="Created"></Column>
           <Column field="updatedAt" header="Last Updated"></Column>
         </DataTable>
+        <Paginator first={first} rows={rows} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
+      </div>
       )}
     </Container>
   );

@@ -65,3 +65,7 @@ export const useDeleteUserByIdMutation = (): UseMutationResult<t.TApiResponse, u
     },
   });
 }
+
+export const useCreateChatMutation = (): UseMutationResult<t.TChatResponse, unknown, Parameters<typeof dataService.createChat>[0]> => {
+  return useMutation(dataService.createChat);
+}

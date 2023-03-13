@@ -33,3 +33,11 @@ export type TApiResponse = {
 };
 
 export type TOperationType = 'Updated' | 'Created' | 'Deleted';
+
+export type TChat = {
+  prompt: string;
+};
+
+export type TChatResponse = {
+  response: string;
+};

@@ -1,0 +1,95 @@
+.sideMenu {
+  width: 240px;
+  height: calc(100vh - 44px);
+  text-align: center;
+  background-color: #202123;
+  padding: 10px;
+}
+
+.chatBox {
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  background-color: #343541;
+  position: relative;
+}
+
+.sideMenuButton {
+  padding: 12px;
+  border : 1px solid white;
+  border-radius: 6px;
+  text-align: left;
+  transition: ease 0.25s all;
+}
+
+.sideMenuButton span {
+  padding-left: 6px;
+  padding-right: 12px;
+}
+
+.sideMenuButton:hover {
+  background-color: #444654;
+}
+
+.chatInputHolder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.chatInputTextArea {
+  width: 90%;
+  border-radius: 6px;
+  border-color: none;
+  border: none;
+  outline: none;
+  padding: 12px;
+  color: white;
+  font-size: 1.25rem;
+  background-color: #40414f;
+  box-shadow: 0 8px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.chatLog {
+  text-align: left;
+  width: 100%;
+}
+
+.chatLogMessage.chatgpt {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatMessageCenter {
+  display: flex;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 12px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.chatLogMessageText {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.avatar {
+  background: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.chatgptAvatar {
+  background: #0da37f;
+  border-radius: 50%;
+  width: 41px;
+  height: 41px;
+}

@@ -1,4 +1,4 @@
-import { MusicSuggestor, ManageUsers } from "./containers";
+import { MusicSuggestor, ManageUsers, EnhancedGPT } from "./containers";
 import Root from "./routes/Root";
 import {ErrorPage} from "./routes/ErrorPage";
 import Callback from "./routes/Callback";
@@ -41,6 +41,10 @@ function App() {
         {
           path: "/users",
           element: <ManageUsers />,
+        },
+        {
+          path: "/gpt",
+          element: <EnhancedGPT />,
         },
         {
           path: "/callback",
