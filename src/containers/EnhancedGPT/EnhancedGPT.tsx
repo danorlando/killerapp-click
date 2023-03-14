@@ -11,7 +11,7 @@ import {
 } from "../../data-provider";
 import { Message } from "primereact/message";
 import ChatMessage from "./ChatMessage";
-import { Dropdown } from "primereact/dropdown";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 
 function EnhancedGPT() {
   const [chatInput, setChatInput] = useState("");
@@ -20,7 +20,9 @@ function EnhancedGPT() {
   ]);
 
   const [models, setModels] = useState<TOpenAIModel[]>([]);
-  const [selectedModel, setSelectedModel] = useState<TOpenAIModel | undefined>(undefined);
+  const [selectedModel, setSelectedModel] = useState<TOpenAIModel | undefined>(
+    undefined
+  );
 
   const getOpenAIModelsQuery = useGetOpenAIModelsQuery();
   const createChatMutation = useCreateChatMutation();
@@ -64,38 +66,41 @@ function EnhancedGPT() {
         <div className={styles.models}>
           <Dropdown
             value={selectedModel}
-            onChange={(e) => handleModelSelected(e.value)}
+            onChange={(e: DropdownChangeEvent) => handleModelSelected(e.value)}
             options={models}
+            filter
             optionLabel="id"
-            placeholder="Open AI Engines"
+            placeholder="Change GPT Model"
             className="w-full md:w-14rem my-4"
+            tooltip="Use this control to change the engine used to generate the response from ChatGPT. Davinci tends to produce best results. text-davinci-003 is used by default.            "
           />
-          <div className="text-left">
-            The model controls the engine used to generate the response from ChatGPT. Davinci tends to produce best results. This chat uses text-davinci-003 as the default engine.
-          </div>
         </div>
       </aside>
-      <section className={styles.chatBox}>
-        {createChatMutation.isError && (
-          <Message severity="error">{`API Error: ${createChatMutation.error?.message}`}</Message>
-        )}
-        <div className={styles.chatLog}>
-          {chatLog.map((message, index) => (
-            <ChatMessage chatMessage={message} key={index} />
-          ))}
+      <section className={styles.chatSection}>
+        <div className={styles.chatBox}>
+          {createChatMutation.isError && (
+            <Message severity="error">{`API Error: ${createChatMutation.error?.message}`}</Message>
+          )}
+          <div className={styles.chatLog}>
+            {chatLog.map((message, index) => (
+              <ChatMessage chatMessage={message} key={index} />
+            ))}
+          </div>
+          {createChatMutation.isLoading && <PendingElement />}
         </div>
-        {createChatMutation.isLoading && <PendingElement />}
-        <form
-          className={styles.chatInputHolder}
-          onSubmit={(e) => handleSubmit(e)}
-        >
-          <input
-            name="chatInput"
-            value={chatInput}
-            onChange={(e) => setChatInput(e.target.value)}
-            className={styles.chatInputTextArea}
-          />
-        </form>
+        <div className={styles.formContainer}>
+          <form
+            className={styles.chatInputForm}
+            onSubmit={(e) => handleSubmit(e)}
+          >
+            <input
+              name="chatInput"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              className={styles.chatInputTextArea}
+            />
+          </form>
+        </div>
       </section>
     </div>
   );

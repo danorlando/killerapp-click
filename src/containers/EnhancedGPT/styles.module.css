@@ -1,18 +1,28 @@
 .sideMenu {
   width: 240px;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 75px);
   text-align: center;
   background-color: #202123;
   padding: 10px;
 }
 
-.chatBox {
+.chatSection {
+  display: flex;
+  height: calc(100vh - 75px);
   flex: 1;
   flex-direction: column;
-  display: flex;
   align-items: center;
   background-color: #343541;
   position: relative;
+}
+.chatBox {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 120px);
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: auto;
 }
 
 .sideMenuButton {
@@ -32,15 +42,16 @@
   background-color: #444654;
 }
 
-.chatInputHolder {
+.formContainer {
+ width: 100%;
+}
+
+.chatInputForm {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 24px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .chatInputTextArea {
@@ -92,4 +103,8 @@
   border-radius: 50%;
   width: 41px;
   height: 41px;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+  color: white !important;
 }

@@ -60,7 +60,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthServiceProvider
+      <AuthServiceProvider   
         config={{
           getRedirectUri: () =>
             `${window.location.pathname}${window.location.search}`,

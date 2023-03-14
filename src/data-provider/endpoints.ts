@@ -37,3 +37,7 @@ export const createChat = () => {
 export const getOpenAIModels = () => {
   return `${LOCAL_API_BASEURL}/models`
 }
+
+export const createChatStream = () => {
+  return `${LOCAL_API_BASEURL}/chatstream`
+}

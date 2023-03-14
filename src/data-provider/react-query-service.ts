@@ -79,3 +79,7 @@ export const useGetOpenAIModelsQuery = (): QueryObserverResult<t.TOpenAIModels> 
     refetchOnMount: false,
   });
 }
+
+export const useCreateChatStreamMutation = (): UseMutationResult<t.TChatResponse, unknown, Parameters<typeof dataService.createChatStream>[0]> => {
+  return useMutation(dataService.createChatStream);
+}

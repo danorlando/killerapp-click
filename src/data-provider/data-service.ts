@@ -37,3 +37,7 @@ export function createChat(data: t.TChat): Promise<t.TChatResponse> {
 export function getOpenAIModels(): Promise<t.TOpenAIModels> {
   return request.get(endpoints.getOpenAIModels());
 }
+
+export function createChatStream(data: t.TChat): Promise<t.TChatResponse> {
+  return request.post(endpoints.createChatStream(), data);
+}
