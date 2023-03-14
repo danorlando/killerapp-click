@@ -1,5 +1,5 @@
 export const SPOTIFY_API_BASEURL = 'https://api.spotify.com/v1'
-
+export const LOCAL_API_BASEURL = import.meta.env.VITE_API_LOCAL_SERVER_URL;
 
 export const songSuggestions = () => {
   return `http://localhost:4000/song`
@@ -28,4 +28,16 @@ export const updateUserById = (id: string) => {
 
 export const deleteUserById = (id: string) => {
   return `http://localhost:4000/users/${id}`
+}
+
+export const createChat = () => {
+  return `${LOCAL_API_BASEURL}/chat`
+}
+
+export const getOpenAIModels = () => {
+  return `${LOCAL_API_BASEURL}/models`
+}
+
+export const createChatStream = () => {
+  return `${LOCAL_API_BASEURL}/chatstream`
 }

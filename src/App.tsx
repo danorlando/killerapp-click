@@ -1,4 +1,4 @@
-import { MusicSuggestor, ManageUsers } from "./containers";
+import { MusicSuggestor, ManageUsers, EnhancedGPT } from "./containers";
 import Root from "./routes/Root";
 import {ErrorPage} from "./routes/ErrorPage";
 import Callback from "./routes/Callback";
@@ -35,12 +35,16 @@ function App() {
       errorElement: <ErrorPage />,
       children: [
         {
-          path: "/",
+          path: "/gpt-playlist",
           element: <MusicSuggestor />,
         },
         {
           path: "/users",
           element: <ManageUsers />,
+        },
+        {
+          path: "/gpt-plus",
+          element: <EnhancedGPT />,
         },
         {
           path: "/callback",
@@ -56,7 +60,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthServiceProvider
+      <AuthServiceProvider   
         config={{
           getRedirectUri: () =>
             `${window.location.pathname}${window.location.search}`,

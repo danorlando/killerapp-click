@@ -16,6 +16,7 @@ export enum QueryKeys {
   getUserById = "getUserById",
   updateUserById = "updateUserById",
   deleteUserById = "deleteUserById",
+  getOpenAIModels = "getOpenAIModels",
 }
 
 export const useSongSuggestionsMutation = (): UseMutationResult<
@@ -64,4 +65,21 @@ export const useDeleteUserByIdMutation = (): UseMutationResult<t.TApiResponse, u
       queryClient.refetchQueries([QueryKeys.getUsers]);
     },
   });
+}
+
+export const useCreateChatMutation = (): UseMutationResult<t.TChatResponse, unknown, Parameters<typeof dataService.createChat>[0]> => {
+  return useMutation(dataService.createChat);
+}
+
+export const useGetOpenAIModelsQuery = (): QueryObserverResult<t.TOpenAIModels> => {
+  return useQuery<t.TOpenAIModels>([QueryKeys.getOpenAIModels], () => dataService.getOpenAIModels(), {
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+  });
+}
+
+export const useCreateChatStreamMutation = (): UseMutationResult<t.TChatResponse, unknown, Parameters<typeof dataService.createChatStream>[0]> => {
+  return useMutation(dataService.createChatStream);
 }
