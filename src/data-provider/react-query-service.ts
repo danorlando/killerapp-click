@@ -29,7 +29,6 @@ export const useSongSuggestionsMutation = (): UseMutationResult<
 
 export const useGetUsersQuery = (): QueryObserverResult<t.TUsersList> => {
   return useQuery<t.TUsersList>([QueryKeys.getUsers], () => dataService.getUsers(), {
-    retry: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,

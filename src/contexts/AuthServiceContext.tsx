@@ -1,11 +1,10 @@
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import React from "react";
-import { triggerNewTokenEvent } from "../data-provider/events";
+// import { triggerNewTokenEvent } from "../data-provider/events";
 import { TAuthContext, TAuthServiceProviderProps } from "./types";
 import redirectUri from "./redirect-uri";
 import { useNavigate } from "react-router-dom";
 import { setTokenHeader } from "../data-provider";
-import axios from "axios";
 
 export const useAuthServiceContext = (): TAuthContext => {
   const context = useAuth0();
@@ -13,8 +12,10 @@ export const useAuthServiceContext = (): TAuthContext => {
 
   return {
     renewTokenSilently: async () => {
+      console.log("renewTokenSilently called")
       const token = await context.getAccessTokenSilently();
-      triggerNewTokenEvent(token);
+      setTokenHeader(token);
+     // triggerNewTokenEvent(token);
     },
     logout: () => {
       context.logout({ logoutParams: { returnTo: window.location.origin } });

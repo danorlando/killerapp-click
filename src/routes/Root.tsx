@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { Header } from "../components";
+import { Header, ApiErrorWatcher } from "../components";
 
 export default function Root() {
   return (
-    <>
+    <ApiErrorWatcher>
       <Header />
       <Outlet />
-    </>
+    </ApiErrorWatcher>
   );
 }
